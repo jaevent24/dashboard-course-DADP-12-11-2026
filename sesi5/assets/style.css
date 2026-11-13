@@ -1,0 +1,17 @@
+/* sesi5/assets/style.css — dimuat otomatis oleh Dash dari folder assets/ */
+.kartu {
+    flex: 1;
+    padding: 16px;
+    border-radius: 10px;
+    background: #F4F6FA;
+    text-align: center;
+}
+
+.kartu p {
+    margin: 0;
+    color: #555;
+}
+
+.kartu h2 {
+    margin: 4px 0 0 0;
+}

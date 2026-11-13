@@ -1,0 +1,8 @@
+* text=auto eol=lf
+
+# Never touch line endings in binary files
+*.joblib binary
+*.pkl    binary
+*.png    binary
+*.jpg    binary
+*.pdf    binary
