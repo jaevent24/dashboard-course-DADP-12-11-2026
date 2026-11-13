@@ -1,0 +1,4 @@
+customer_id,region,segment,contract_type,payment_method,internet_service,tenure_months,monthly_charges,total_charges,num_complaints,support_calls
+NEW-0001,Sumatera,Retail,Bulanan,Kartu Kredit,Mobile Broadband,29,287000.0,8127000.0,1,2
+NEW-0002,Jawa,Retail,Mingguan,Kartu Kredit,Fiber,25,514000.0,13167000.0,0,1
+NEW-0003,Jawa,UMKM,Tahunan,Transfer Bank,Mobile Broadband,41,424000.0,17330000.0,3,5
