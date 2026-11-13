@@ -1,14 +1,14 @@
-# sesi6/latihan_sesi6.py — Latihan mandiri Sesi 6 (jalankan: python sesi6/latihan_sesi6.py)
+# sesi6/latihan_sesi6.py — Latihan mandiri Sesi 6 sebagai halaman Dash
+# Jalankan: python sesi6/latihan_sesi6.py  lalu buka http://127.0.0.1:8057
 # 1. Bar horizontal churn rate per payment_method, terurut, + garis rata-rata (add_vline)
 # 2. Bubble chart: scatter dengan size="support_calls"
 # 3. Sunburst region -> segmen -> kontrak (values = jumlah pelanggan)
 # 4. Gauge churn rate keseluruhan (go.Indicator mode="gauge+number")
-from pathlib import Path
-
 import plotly.express as px
 import plotly.graph_objects as go
 
-from plotly_galeri import ROOT, STATUS, KATEGORI, load  # pakai ulang load() & palet Sesi 6
+# pakai ulang load(), palet, dan tata letak galeri dari Sesi 6
+from plotly_galeri import STATUS, KATEGORI, load, galeri_layout
 
 
 def buat_latihan(df):
@@ -60,12 +60,16 @@ def buat_latihan(df):
 
 
 if __name__ == "__main__":
-    OUT = ROOT / "sesi6" / "output"
-    OUT.mkdir(exist_ok=True)
-    figs = buat_latihan(load())
-    for nama, f in figs.items():
-        f.write_html(OUT / f"{nama}.html", include_plotlyjs="cdn")
-    print(f"{len(figs)} chart latihan tersimpan di", OUT)
+    # Tampilkan 4 chart latihan langsung di halaman web (bukan file HTML di folder output)
+    from dash import Dash
+
+    app = Dash(__name__, title="Latihan Sesi 6")
+    app.layout = galeri_layout(
+        buat_latihan(load()), "Latihan Mandiri Sesi 6",
+        "Bar terurut + garis rata-rata, bubble chart, sunburst 3 tingkat, dan gauge. "
+        "Klik irisan sunburst untuk memperbesar cabang; klik tengah untuk kembali.",
+        lebar_penuh=("L2_bubble",))
+    app.run(debug=True, port=8057)
 
 # Cara membaca sunburst (latihan 3):
 # - Lingkar dalam = region, lingkar tengah = segmen, lingkar luar = jenis kontrak.

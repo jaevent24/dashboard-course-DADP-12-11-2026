@@ -1,4 +1,5 @@
-# sesi6/plotly_galeri.py — galeri 13 chart Plotly (jalankan: python sesi6/plotly_galeri.py)
+# sesi6/plotly_galeri.py — galeri 13 chart Plotly sebagai halaman Dash
+# Jalankan: python sesi6/plotly_galeri.py  lalu buka http://127.0.0.1:8056
 from pathlib import Path
 
 import pandas as pd
@@ -128,10 +129,36 @@ def buat_figur(df):
     return fig
 
 
+def galeri_layout(figs, judul, keterangan, lebar_penuh=()):
+    """Susun dict figure menjadi grid 2 kolom berisi kartu; key di lebar_penuh memakai 2 kolom.
+    Dipakai juga oleh latihan_sesi6.py."""
+    from dash import html, dcc
+
+    def kartu(nama, f):
+        gaya = {"background": "white", "borderRadius": "10px", "padding": "8px",
+                "boxShadow": "0 1px 3px rgba(0,0,0,.08)"}
+        if nama in lebar_penuh:
+            gaya["gridColumn"] = "1 / -1"
+        return html.Div([dcc.Graph(figure=f, config={"displaylogo": False}),
+                         html.Small(nama, style={"color": "#888", "marginLeft": "8px"})], style=gaya)
+
+    return html.Div(style={"maxWidth": "1300px", "margin": "auto", "padding": "16px",
+                           "fontFamily": "Arial, sans-serif", "background": "#F5F7FB"}, children=[
+        html.H1(judul, style={"marginBottom": "4px"}),
+        html.P(keterangan, style={"color": "#666", "marginTop": 0}),
+        html.Div(style={"display": "grid", "gridTemplateColumns": "1fr 1fr", "gap": "12px"},
+                 children=[kartu(n, f) for n, f in figs.items()]),
+    ])
+
+
 if __name__ == "__main__":
-    OUT = ROOT / "sesi6" / "output"
-    OUT.mkdir(exist_ok=True)
-    figs = buat_figur(load())
-    for nama, f in figs.items():
-        f.write_html(OUT / f"{nama}.html", include_plotlyjs="cdn")
-    print(f"{len(figs)} chart HTML tersimpan di", OUT)
+    # Tampilkan ke-13 chart langsung di halaman web (bukan file HTML di folder output)
+    from dash import Dash
+
+    app = Dash(__name__, title="Galeri Plotly")
+    app.layout = galeri_layout(
+        buat_figur(load()), "Galeri 13 Chart Plotly",
+        "Sesi 6 · Hover untuk detail, drag untuk zoom, double-click untuk reset, "
+        "klik legenda untuk menyembunyikan kelompok.",
+        lebar_penuh=("scatter", "line"))
+    app.run(debug=True, port=8056)
